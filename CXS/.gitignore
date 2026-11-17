@@ -1,0 +1,18 @@
+# dependencies and builds
+node_modules/
+dist/
+
+# secrets and local config
+.env
+.env.local
+*.local
+
+# original source artwork (optimised copies live in client/public/images)
+_pics_original/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea

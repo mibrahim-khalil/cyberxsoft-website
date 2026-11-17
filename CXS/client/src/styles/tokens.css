@@ -1,0 +1,66 @@
+/* =====================================================
+   CyberX Soft — design tokens
+   Palette is taken from the CXS logo (deep navy,
+   cobalt blue, signal green) and the supplied imagery.
+===================================================== */
+
+:root {
+  /* Navy scale */
+  --navy-1000: #02081a;
+  --navy-950: #040d20;
+  --navy-900: #071329;
+  --navy-850: #0a1a38;
+  --navy-800: #0d2451;
+  --navy-700: #143a74;
+
+  /* Accents */
+  --blue-500: #1b7fd0;
+  --blue-400: #3b9de6;
+  --cyan-300: #7fdcf0;
+  --green-600: #1f9a5a;
+  --green-500: #2fc475;
+  --green-400: #52e08f;
+  --green-300: #9af2be;
+  --amber-300: #ffd48a;
+
+  /* Neutrals */
+  --paper: #f3f6fb;
+  --paper-2: #e8eef7;
+  --white: #ffffff;
+
+  /* Type */
+  --font-display: "Inter Tight Variable", "Inter Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-hero: clamp(2.7rem, 1rem + 4.3vw, 5.4rem);
+  --fs-h1: clamp(2.5rem, 1.3rem + 4.4vw, 5rem);
+  --fs-h2: clamp(2rem, 1.2rem + 2.9vw, 3.9rem);
+  --fs-h3: clamp(1.25rem, 1.05rem + .7vw, 1.65rem);
+  --fs-lead: clamp(1.05rem, .98rem + .35vw, 1.28rem);
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --header-h: 76px;
+  --section-y: clamp(88px, 11vw, 168px);
+
+  /* Radius */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 18px;
+  --r-lg: 26px;
+  --r-xl: 40px;
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 180ms;
+  --t-med: 380ms;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --header-h: 68px;
+  }
+}

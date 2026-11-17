@@ -1,0 +1,50 @@
+/* WORK */
+
+.principles {
+  display: grid;
+  gap: 14px;
+}
+
+.principle {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 22px 26px;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--fg);
+}
+
+.principle > svg {
+  margin-top: 2px;
+  color: var(--accent);
+}
+
+.empty {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  max-width: 720px;
+  margin: clamp(40px, 5vw, 72px) auto 0;
+  padding: clamp(36px, 5vw, 72px);
+  text-align: center;
+  border-radius: var(--r-xl);
+}
+
+.empty p {
+  max-width: 48ch;
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+@media (max-width: 900px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+}
