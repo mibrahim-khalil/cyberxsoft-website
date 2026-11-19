@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 
 const allowedServices = [
@@ -78,11 +77,9 @@ const contactEnquirySchema = new mongoose.Schema(
     privacyConsent: {
       type: Boolean,
       required: true,
-
       validate: {
         validator: (value) => value === true,
-        message:
-          "Privacy consent is required.",
+        message: "Privacy consent is required.",
       },
     },
 
@@ -91,8 +88,25 @@ const contactEnquirySchema = new mongoose.Schema(
       required: true,
     },
 
-    // Result of the notification email. Older enquiries
-    // that were saved before email existed simply lack it.
+    // =====================================
+    // Spam Detection Fields
+    // =====================================
+    isSpam: {
+      type: Boolean,
+      default: false,
+      index: true,
+    },
+
+    spamReason: {
+      type: String,
+      trim: true,
+      maxlength: 200,
+      default: "",
+    },
+
+    // =====================================
+    // Email Notification Tracking
+    // =====================================
     emailStatus: {
       type: String,
       enum: ["pending", "sent", "partial", "failed", "skipped"],
