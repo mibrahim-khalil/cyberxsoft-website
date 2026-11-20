@@ -48,11 +48,13 @@
   display: block;
   flex: none;
   position: relative;
+  top: 6px; /* moves the logo slightly lower */
   z-index: 3;
 }
 
+
 .site-header__logo img {
-  height: 70px; /* logo size */
+  height: 70px; /* logo size (was 70px) */
   width: auto;
   transition: transform var(--t-med) var(--ease-out);
 }
@@ -646,8 +648,12 @@
     grid-template-columns: 1fr;
   }
 
+   .site-header__logo {
+    top: 2px;
+  }
+
   .site-header__logo img {
-    height: 46px;
+    height: 44px;
   }
 }
 
