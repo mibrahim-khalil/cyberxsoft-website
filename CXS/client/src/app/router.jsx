@@ -29,6 +29,7 @@ const router = createBrowserRouter([
       { index: true, ...page(() => import("../features/home/HomePage")) },
       { path: "services", ...page(() => import("../features/services/ServicesPage")) },
       { path: "services/:serviceSlug", ...page(() => import("../features/services/ServiceDetailPage")) },
+      { path: "work", ...page(() => import("../features/case-studies/WorkPage")) },
       { path: "case-studies", ...page(() => import("../features/case-studies/WorkPage")) },
       { path: "insights", ...page(() => import("../features/insights/InsightsPage")) },
       { path: "about", ...page(() => import("../features/about/AboutPage")) },
