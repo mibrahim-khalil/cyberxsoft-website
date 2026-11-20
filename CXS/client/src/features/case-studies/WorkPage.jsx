@@ -1,9 +1,11 @@
-import { CheckCircle2, FileCheck2 } from "lucide-react";
+import { useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { CheckCircle2, ArrowUpRight } from "lucide-react";
 
 import PageHero from "../../components/PageHero";
 import CTASection from "../../components/CTASection";
 import SectionHead from "../../ui/SectionHead";
-import { Item, Reveal, Stagger } from "../../ui/motion";
+import { Item, Stagger } from "../../ui/motion";
 import { pageMedia } from "../../config/media";
 
 import { Block, Rows, SplitLayout } from "../services/ServiceBlocks";
@@ -32,6 +34,26 @@ function Principles() {
 }
 
 export default function WorkPage() {
+  const location = useLocation();
+
+  // Automatically scroll to the exact case study when clicked from home page
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = location.hash.replace("#", "");
+      const timer = setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          el.classList.add("work-card--highlighted");
+          setTimeout(() => el.classList.remove("work-card--highlighted"), 2500);
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [location.hash]);
+
   return (
     <>
       <PageHero
@@ -58,36 +80,68 @@ export default function WorkPage() {
         </SplitLayout>
       </Block>
 
-      <Block tone="dark" aurora>
+      <Block tone="dark" aurora id="case-studies">
         <SectionHead
-          label="Selected work"
+          label="Case Studies"
           title="Project stories built around *verified evidence*"
-          description="Published work should make the client context, CyberX Soft responsibilities, delivered solution, and approved outcome clear without overstating the engagement."
+          description="Detailed overview of our engagements, discovery workflows, architectures, and approved deliverables."
           center
         />
 
-        {publishedCaseStudies.length > 0 ? (
-          <div className="work-grid">
-            {publishedCaseStudies.map((project) => (
-              <article key={project.id} className="card glass spot">
-                <span className="pill">{project.context}</span>
-                <h3>{project.name}</h3>
-                {project.summary && <p>{project.summary}</p>}
-              </article>
-            ))}
-          </div>
-        ) : (
-          <Reveal className="empty glass" y={34} blur={0}>
-            <span className="icon-tile">
-              <FileCheck2 size={24} strokeWidth={1.7} aria-hidden="true" />
-            </span>
-            <h3 className="t-h3">Approved project stories are being prepared</h3>
-            <p>
-              Selected engagements will be published here once project scope, client approval,
-              supporting evidence, and any publishable outcomes have been confirmed.
-            </p>
-          </Reveal>
-        )}
+        {/* 9 Complete Case Studies */}
+        <div className="work-full-list">
+          {publishedCaseStudies.map((project) => (
+            <article
+              key={project.id}
+              id={project.id}
+              className="work-card glass spot"
+            >
+              <div className="work-card__header">
+                <div className="work-card__brand">
+                  {project.logo && (
+                    <div className="work-card__logo-tile">
+                      <img
+                        src={project.logo}
+                        alt={project.client}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <span className="work-card__tag">{project.tag}</span>
+                    <h3 className="work-card__title">{project.title}</h3>
+                  </div>
+                </div>
+
+                <span className="work-card__no">{project.number}</span>
+              </div>
+
+              <div className="work-card__body">
+                {project.fullParagraphs.map((para, i) => (
+                  <p key={i} className="work-card__text">
+                    {para}
+                  </p>
+                ))}
+              </div>
+
+              <div className="work-card__footer">
+                <ul className="work-card__deliverables">
+                  {project.shortFeatures.map((f, i) => (
+                    <li key={i}>
+                      <span>✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <Link to="/contact" className="work-card__link">
+                  Discuss similar project <ArrowUpRight size={15} />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
       </Block>
 
       <Block tone="light">
