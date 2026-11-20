@@ -283,7 +283,7 @@
   margin-top: 6px;
 }
 
-/* ---------- 02 · Capability panorama (Restored Big Card Sizes) ---------- */
+/* ---------- 02 · Capability Panorama & Evidence Cards ---------- */
 
 .pano {
   position: relative;
@@ -404,7 +404,7 @@
   display: none;
 }
 
-/* BIG CARDS — Matching original proportions */
+/* BIG CARDS */
 .pano__panel {
   position: relative;
   isolation: isolate;
@@ -442,6 +442,7 @@
     linear-gradient(90deg, rgba(4, 13, 32, 0.55), transparent 55%);
 }
 
+/* Big Outline Number */
 .pano__no {
   position: absolute;
   top: 24px;
@@ -454,6 +455,44 @@
   line-height: 1;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.42);
+}
+
+/* Top Badge: Client Brand Logo on the Left of the Number */
+.pano__top-badge {
+  position: absolute;
+  top: 24px;
+  right: 36px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 32px);
+  pointer-events: none;
+}
+
+.pano__top-badge .pano__no {
+  position: static;
+  top: auto;
+  right: auto;
+}
+
+.pano__brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pano__brand-logo img {
+  max-width: clamp(110px, 13vw, 175px);
+  max-height: clamp(50px, 6vw, 76px);
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+  transition: opacity var(--t-med), transform var(--t-med);
+}
+
+.pano__panel:hover .pano__brand-logo img {
+  opacity: 1;
+  transform: scale(1.04);
 }
 
 .pano__caption {
@@ -901,7 +940,7 @@
   color: var(--green-400);
 }
 
-/* ---------- Chapter rail ---------- */
+/* ---------- Chapter Rail ---------- */
 
 .chapter-rail {
   position: fixed;
@@ -1080,9 +1119,18 @@
   .journey__rail {
     left: 11px;
   }
-}
 
-@media (max-width: 640px) {
+  .pano__top-badge {
+    top: 18px;
+    right: 20px;
+    gap: 12px;
+  }
+
+  .pano__brand-logo img {
+    max-width: 85px;
+    max-height: 38px;
+  }
+
   .pano__caption {
     left: 12px;
     right: 12px;
