@@ -283,17 +283,19 @@
   margin-top: 6px;
 }
 
-/* ---------- 02 · Capability panorama ---------- */
+/* ---------- 02 · Capability panorama (Restored Big Card Sizes) ---------- */
 
 .pano {
   position: relative;
   background: var(--navy-950);
   color: var(--fg);
+  padding-block: clamp(70px, 8vw, 110px);
+  overflow: hidden;
 }
 
-.pano__sticky {
+.pano__content {
   position: relative;
-  padding-block: clamp(80px, 10vw, 140px);
+  width: 100%;
 }
 
 .pano__head {
@@ -307,13 +309,50 @@
 
 .pano__meta {
   display: grid;
-  gap: 22px;
+  gap: 18px;
   justify-items: end;
+}
+
+.pano__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pano__nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pano__nav-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.pano__nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.pano__nav-btn:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
 }
 
 .pano__progress {
   display: grid;
-  gap: 10px;
+  gap: 8px;
   justify-items: end;
   width: 220px;
 }
@@ -338,12 +377,12 @@
   height: 2px;
   overflow: hidden;
   background: var(--line);
+  border-radius: 2px;
 }
 
 .pano__bar span {
   display: block;
   height: 100%;
-  transform-origin: 0 50%;
   background: linear-gradient(90deg, var(--blue-400), var(--green-400));
 }
 
@@ -351,73 +390,47 @@
   position: relative;
   z-index: 1;
   display: flex;
-  gap: clamp(16px, 2vw, 28px);
-  margin-top: clamp(32px, 4vw, 56px);
+  gap: clamp(20px, 2.5vw, 32px);
+  margin-top: clamp(36px, 4vw, 52px);
   padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2));
-  width: max-content;
-  will-change: transform;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 
-.pano__sticky.is-pinned {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100svh;
-  padding-block: calc(var(--header-h) + 4px) 36px;
-  overflow: hidden;
+.pano__track::-webkit-scrollbar {
+  display: none;
 }
 
-.pano__sticky.is-pinned .pano__head {
-  margin-top: 0;
-}
-
-.pano__sticky.is-pinned .sh__title {
-  margin-top: 16px;
-  font-size: clamp(1.8rem, 1rem + 2.2vw, 3.1rem);
-}
-
-.pano__sticky.is-pinned .sh__desc {
-  margin-top: 14px;
-  max-width: 72ch;
-  font-size: 0.98rem;
-  line-height: 1.55;
-}
-
-.pano__sticky.is-pinned .pano__track {
-  flex: 1;
-  min-height: 0;
-  margin-top: clamp(16px, 2.6vh, 32px);
-}
-
+/* BIG CARDS — Matching original proportions */
 .pano__panel {
   position: relative;
   isolation: isolate;
   flex: none;
   display: block;
-  width: min(68vw, 960px);
-  height: 100%;
-  min-height: 360px;
+  width: min(68vw, 980px);
+  height: clamp(580px, 68svh, 720px);
+  min-height: 520px;
   overflow: hidden;
   border-radius: var(--r-xl);
   background: var(--navy-900);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  scroll-snap-align: start;
 }
 
 .pano__img {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -6%;
-  width: 112%;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  max-width: none;
   object-fit: cover;
-  transition: transform 1.2s var(--ease-out);
+  transition: transform 0.9s var(--ease-out);
 }
 
 .pano__panel:hover .pano__img {
-  transform: scale(1.04);
+  transform: scale(1.03);
 }
 
 .pano__shade {
@@ -431,11 +444,11 @@
 
 .pano__no {
   position: absolute;
-  top: 20px;
-  right: 32px;
+  top: 24px;
+  right: 36px;
   z-index: 2;
   font-family: var(--font-display);
-  font-size: clamp(4.5rem, 8vw, 8.5rem);
+  font-size: clamp(5rem, 9vw, 9rem);
   font-weight: 700;
   letter-spacing: -0.06em;
   line-height: 1;
@@ -445,50 +458,50 @@
 
 .pano__caption {
   position: absolute;
-  left: 22px;
-  bottom: 22px;
+  left: 28px;
+  bottom: 28px;
   z-index: 3;
   display: grid;
-  gap: 10px;
-  width: min(430px, calc(100% - 44px));
-  padding: 26px;
+  gap: 12px;
+  width: min(450px, calc(100% - 56px));
+  padding: 28px;
   border-radius: var(--r-lg);
 }
 
 .pano__icon {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 14px;
   color: var(--green-300);
   background: rgba(255, 255, 255, 0.1);
 }
 
 .pano__caption h3 {
-  font-size: clamp(1.25rem, 1.05rem + 0.6vw, 1.65rem);
+  font-size: clamp(1.35rem, 1.15rem + 0.7vw, 1.75rem);
   color: #fff;
 }
 
 .pano__caption p {
-  font-size: 0.93rem;
-  line-height: 1.55;
-  color: rgba(226, 236, 255, 0.82);
+  font-size: 0.96rem;
+  line-height: 1.58;
+  color: rgba(226, 236, 255, 0.85);
 }
 
 .pano__caption ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 14px;
+  gap: 8px 16px;
 }
 
 .pano__caption li {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  color: rgba(226, 236, 255, 0.78);
+  color: rgba(226, 236, 255, 0.8);
 }
 
 .pano__caption li svg {
@@ -499,8 +512,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
-  font-size: 0.88rem;
+  margin-top: 6px;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--green-400);
 }

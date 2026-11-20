@@ -1,24 +1,16 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { ArrowUpRight, Check } from "lucide-react";
-import { useEffect } from "react";
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 import SectionHead from "../../ui/SectionHead";
 import Button from "../../ui/Button";
-import { imageProps, useMediaQuery } from "../../ui/motion";
+import { imageProps } from "../../ui/motion";
 import { serviceMedia } from "../../config/media";
 import { services } from "../services/servicesData";
 
-/* Capability panorama: pinned section that pans sideways while you scroll */
-
-function Panel({ service, index, progress, pinned }) {
+function Panel({ service }) {
   const media = serviceMedia[service.slug];
   const Icon = service.icon;
-  const reduce = useReducedMotion();
-
-  // Image drifts the opposite way to the track for a panoramic parallax
-  const imgX = useTransform(progress, [0, 1], [`${index * -3}%`, `${index * -3 + 8}%`]);
 
   return (
     <Link
@@ -26,11 +18,11 @@ function Panel({ service, index, progress, pinned }) {
       className="pano__panel"
       data-cursor="Explore"
     >
-      <motion.img
+      <img
         {...imageProps(media.hero, { sizes: "(max-width: 900px) 100vw, 1000px" })}
         alt=""
         className="pano__img"
-        style={pinned && !reduce ? { x: imgX, objectPosition: media.position } : { objectPosition: media.position }}
+        style={{ objectPosition: media.position }}
       />
       <span className="pano__shade" aria-hidden="true" />
 
@@ -59,52 +51,53 @@ function Panel({ service, index, progress, pinned }) {
 }
 
 export default function CapabilitiesPanorama() {
-  const wrapRef = useRef(null);
   const trackRef = useRef(null);
-  const [range, setRange] = useState(0);
   const [current, setCurrent] = useState(0);
-  const desktop = useMediaQuery("(min-width: 981px)");
-  const reduce = useReducedMotion();
-  const pinned = desktop && !reduce;
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start start", "end end"] });
-  const x = useTransform(scrollYProgress, [0, 1], [0, -range]);
-  const barScale = useTransform(scrollYProgress, [0, 1], [0.04, 1]);
+  const updateScrollState = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    const scrollLeft = el.scrollLeft;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    setCanScrollLeft(scrollLeft > 20);
+    setCanScrollRight(scrollLeft < maxScroll - 20);
 
-  useMotionValueEvent(scrollYProgress, "change", (value) => {
-    setCurrent(Math.min(services.length - 1, Math.floor(value * services.length * 0.999)));
-  });
+    const childWidth = el.firstElementChild ? el.firstElementChild.clientWidth + 24 : 1;
+    const index = Math.round(scrollLeft / childWidth);
+    setCurrent(Math.min(services.length - 1, Math.max(0, index)));
+  };
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return undefined;
-
-    const measure = () => {
-      const gutter = Math.max(24, (window.innerWidth - Math.min(window.innerWidth - 96, 1240)) / 2);
-      setRange(Math.max(0, track.scrollWidth - window.innerWidth + gutter));
-    };
-
-    const observer = new ResizeObserver(measure);
-    observer.observe(track);
-    window.addEventListener("resize", measure);
+    const el = trackRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+    updateScrollState();
     return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", measure);
+      el.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
     };
-  }, [pinned]);
+  }, []);
+
+  const scrollByAmount = (direction) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const amount = el.firstElementChild ? el.firstElementChild.clientWidth + 28 : 500;
+    el.scrollBy({ left: direction * amount, behavior: "smooth" });
+  };
 
   return (
     <section
-      ref={wrapRef}
       className="pano"
       data-tone="dark"
       id="capabilities"
       data-chapter="Capabilities"
-      style={pinned ? { height: `calc(100svh + ${range}px)` } : undefined}
     >
       <div className="aurora" aria-hidden="true" />
 
-      <div className={`pano__sticky ${pinned ? "is-pinned" : ""}`}>
+      <div className="pano__content">
         <div className="container pano__head">
           <SectionHead
             label="Our services"
@@ -113,33 +106,53 @@ export default function CapabilitiesPanorama() {
           />
 
           <div className="pano__meta">
-            <Button to="/services" variant="glass" size="sm">
-              View All Services
-            </Button>
-            {pinned && (
-              <div className="pano__progress" aria-hidden="true">
-                <span className="pano__count">
-                  {String(current + 1).padStart(2, "0")} <i>/ {String(services.length).padStart(2, "0")}</i>
-                </span>
-                <span className="pano__bar">
-                  <motion.span style={{ scaleX: barScale }} />
-                </span>
+            <div className="pano__controls">
+              <Button to="/services" variant="glass" size="sm">
+                View All Services
+              </Button>
+              <div className="pano__nav-arrows">
+                <button
+                  type="button"
+                  className="pano__nav-btn"
+                  onClick={() => scrollByAmount(-1)}
+                  disabled={!canScrollLeft}
+                  aria-label="Previous service"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  className="pano__nav-btn"
+                  onClick={() => scrollByAmount(1)}
+                  disabled={!canScrollRight}
+                  aria-label="Next service"
+                >
+                  <ChevronRight size={20} />
+                </button>
               </div>
-            )}
+            </div>
+
+            <div className="pano__progress" aria-hidden="true">
+              <span className="pano__count">
+                {String(current + 1).padStart(2, "0")} <i>/ {String(services.length).padStart(2, "0")}</i>
+              </span>
+              <span className="pano__bar">
+                <span 
+                  style={{ 
+                    width: `${((current + 1) / services.length) * 100}%`,
+                    transition: "width 0.3s ease"
+                  }} 
+                />
+              </span>
+            </div>
           </div>
         </div>
 
-        <motion.div ref={trackRef} className="pano__track" style={pinned ? { x } : undefined}>
-          {services.map((service, index) => (
-            <Panel
-              key={service.id}
-              service={service}
-              index={index}
-              progress={scrollYProgress}
-              pinned={pinned}
-            />
+        <div ref={trackRef} className="pano__track">
+          {services.map((service) => (
+            <Panel key={service.id} service={service} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
