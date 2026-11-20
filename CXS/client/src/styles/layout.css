@@ -52,7 +52,7 @@
 }
 
 .site-header__logo img {
-  height: 54px;
+  height: 70px; /* logo size */
   width: auto;
   transition: transform var(--t-med) var(--ease-out);
 }
