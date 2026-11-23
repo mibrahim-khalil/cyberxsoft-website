@@ -145,6 +145,8 @@ export const services = [
 
     slug: "creative-media-design-animation",
 
+    galleryPath: "/gallery",
+
     number: "02",
 
     icon: Brush,
