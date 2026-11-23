@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { ChevronRight, Home } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
+
 import Button from "../ui/Button";
 import Glass3D from "../ui/Glass3D";
 import { EASE, SplitTitle, imageProps } from "../ui/motion";
 import { Chapter } from "../ui/SectionHead";
+
 
 /**
  * Inner-page hero. Full-bleed panoramic image with a camera-style
@@ -19,6 +21,7 @@ export default function PageHero({
   breadcrumbs = [],
   action = null,
   secondaryAction = null,
+  tertiaryAction = null,
   image,
   position = "70% 50%",
   scene = "soft",
@@ -28,10 +31,12 @@ export default function PageHero({
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
+
   const scale = useTransform(scrollYProgress, [0, 1], [1.04, 1.32]);
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
   const textY = useTransform(scrollYProgress, [0, 1], [0, -90]);
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
 
   return (
     <section ref={ref} className={`page-hero ${compact ? "page-hero--compact" : ""}`} data-tone="dark" data-scene-root>
@@ -43,10 +48,13 @@ export default function PageHero({
         <img {...imageProps(image, { eager: true })} alt="" style={{ objectPosition: position }} />
       </motion.div>
 
+
       <div className="page-hero__shade" aria-hidden="true" />
       <div className="page-hero__fade" aria-hidden="true" />
 
+
       {scene && <Glass3D preset={scene} delay={1500} />}
+
 
       <div className="container page-hero__inner">
         <motion.div
@@ -71,6 +79,7 @@ export default function PageHero({
             ))}
           </motion.nav>
 
+
           {eyebrow && (
             <motion.div
               initial={reduce ? false : { opacity: 0, y: 14 }}
@@ -81,7 +90,9 @@ export default function PageHero({
             </motion.div>
           )}
 
+
           <SplitTitle as="h1" text={title} className="page-hero__title" delay={0.25} stagger={0.055} />
+
 
           {description && (
             <motion.p
@@ -94,7 +105,8 @@ export default function PageHero({
             </motion.p>
           )}
 
-          {(action || secondaryAction) && (
+
+          {(action || secondaryAction || tertiaryAction) && (
             <motion.div
               className="btn-row"
               initial={reduce ? false : { opacity: 0, y: 20 }}
@@ -109,6 +121,11 @@ export default function PageHero({
               {secondaryAction && (
                 <Button to={secondaryAction.path} variant="glass">
                   {secondaryAction.label}
+                </Button>
+              )}
+              {tertiaryAction && (
+                <Button to={tertiaryAction.path} variant="glass">
+                  {tertiaryAction.label}
                 </Button>
               )}
             </motion.div>
