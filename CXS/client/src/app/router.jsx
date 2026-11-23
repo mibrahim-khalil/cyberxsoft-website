@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 
+
 import PublicLayout from "../layout/PublicLayout";
 import RouteError from "./RouteError";
+
 
 /*
  * Every page is code-split: the 3D scene, motion and page styles
@@ -11,6 +13,7 @@ const page = (loader) => ({
   lazy: async () => ({ Component: (await loader()).default }),
 });
 
+
 const legal = (legalSlug) => ({
   path: legalSlug,
   lazy: async () => {
@@ -18,6 +21,7 @@ const legal = (legalSlug) => ({
     return { Component: () => <LegalPage legalSlug={legalSlug} /> };
   },
 });
+
 
 const router = createBrowserRouter([
   {
@@ -31,6 +35,7 @@ const router = createBrowserRouter([
       { path: "services/:serviceSlug", ...page(() => import("../features/services/ServiceDetailPage")) },
       { path: "work", ...page(() => import("../features/case-studies/WorkPage")) },
       { path: "case-studies", ...page(() => import("../features/case-studies/WorkPage")) },
+      { path: "gallery", ...page(() => import("../features/gallery/GalleryPage")) },
       { path: "insights", ...page(() => import("../features/insights/InsightsPage")) },
       { path: "about", ...page(() => import("../features/about/AboutPage")) },
       { path: "contact", ...page(() => import("../features/contact/ContactPage")) },
@@ -42,5 +47,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 
 export default router;
