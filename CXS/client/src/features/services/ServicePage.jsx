@@ -29,6 +29,11 @@ export default function ServicePage({ slug }) {
         breadcrumbs={[{ label: "Services", path: "/services" }, { label: content.name }]}
         action={{ label: "Book a Consultation", path: "/contact" }}
         secondaryAction={{ label: "All services", path: "/services" }}
+        tertiaryAction={
+          slug === "creative-media-design-animation"
+            ? { label: "View Gallery", path: "/gallery" }
+            : null
+        }
         image={media.hero}
         position={media.position}
       />
