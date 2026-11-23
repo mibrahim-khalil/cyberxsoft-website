@@ -14,11 +14,21 @@ import "./services.css";
 
 const engagementIcons = [SearchCheck, ClipboardCheck, UserRound, UsersRound, Settings2, Handshake];
 
+/* Each service has its own separate gallery page */
+const galleryPaths = {
+  "creative-media-design-animation": "/gallery",
+  "brand-strategy-digital-growth": "/gallery/brand-strategy",
+  "ai-software-digital-solutions": "/gallery/ai-software",
+  "data-cybersecurity-digital-governance": "/gallery/data-cybersecurity",
+};
+
 /* One template, four services — copy lives in serviceContent.js */
 export default function ServicePage({ slug }) {
   const content = serviceContent[slug];
   const media = serviceMedia[slug];
   const { data } = content;
+
+  const galleryPath = galleryPaths[slug];
 
   return (
     <>
@@ -29,11 +39,7 @@ export default function ServicePage({ slug }) {
         breadcrumbs={[{ label: "Services", path: "/services" }, { label: content.name }]}
         action={{ label: "Book a Consultation", path: "/contact" }}
         secondaryAction={{ label: "All services", path: "/services" }}
-        tertiaryAction={
-          slug === "creative-media-design-animation"
-            ? { label: "View Gallery", path: "/gallery" }
-            : null
-        }
+        tertiaryAction={galleryPath ? { label: "View Gallery", path: galleryPath } : null}
         image={media.hero}
         position={media.position}
       />

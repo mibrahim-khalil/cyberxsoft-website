@@ -1,9 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
-
 import PublicLayout from "../layout/PublicLayout";
 import RouteError from "./RouteError";
-
 
 /*
  * Every page is code-split: the 3D scene, motion and page styles
@@ -13,7 +11,6 @@ const page = (loader) => ({
   lazy: async () => ({ Component: (await loader()).default }),
 });
 
-
 const legal = (legalSlug) => ({
   path: legalSlug,
   lazy: async () => {
@@ -21,7 +18,6 @@ const legal = (legalSlug) => ({
     return { Component: () => <LegalPage legalSlug={legalSlug} /> };
   },
 });
-
 
 const router = createBrowserRouter([
   {
@@ -36,6 +32,9 @@ const router = createBrowserRouter([
       { path: "work", ...page(() => import("../features/case-studies/WorkPage")) },
       { path: "case-studies", ...page(() => import("../features/case-studies/WorkPage")) },
       { path: "gallery", ...page(() => import("../features/gallery/GalleryPage")) },
+      { path: "gallery/brand-strategy", ...page(() => import("../features/gallery/brand/BrandGalleryPage")) },
+      { path: "gallery/ai-software", ...page(() => import("../features/gallery/ai/AiGalleryPage")) },
+      { path: "gallery/data-cybersecurity", ...page(() => import("../features/gallery/data/DataGalleryPage")) },
       { path: "insights", ...page(() => import("../features/insights/InsightsPage")) },
       { path: "about", ...page(() => import("../features/about/AboutPage")) },
       { path: "contact", ...page(() => import("../features/contact/ContactPage")) },
@@ -47,6 +46,5 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
 
 export default router;
