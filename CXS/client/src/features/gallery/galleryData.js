@@ -1,6 +1,6 @@
 /**
  * CYBERX SOFT
- * GALLERY DATA
+ * GALLERY DATA  (Creative Media, Design & Animation gallery)
  *
  * HOW TO ADD WORK
  * Copy any item below and edit it. Fields:
@@ -11,7 +11,8 @@
  *   type        "video" or "image"
  *   ratio       "wide" | "portrait" | "square"   (card shape, optional)
  *   thumb       (optional for YouTube) Cloudinary image public ID used as the card picture
- *   image       (type "image")  Cloudinary public ID of the full image
+ *   image       (type "image")  Cloudinary public ID, full https:// URL,
+ *               or a site path such as "/logos/name.png"
  *   video       (type "video")  one of:
  *                 { source: "cloudinary", id: "folder/video-public-id" }
  *                 { source: "file",       src: "https://.../video.mp4" }
@@ -32,10 +33,12 @@ const CLOUD_NAME = "uao8z2fi";
 const IMG = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
 const VID = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload`;
 
-/* ---------- Cloudinary helpers ---------- */
+/* ---------- Media helpers ---------- */
 
+/* Full URLs and site paths (like /logos/x.png) are used as they are.
+   Anything else is treated as a Cloudinary public ID. */
 export const cloudImage = (id, width = 900) =>
-  /^https?:/i.test(id) ? id : `${IMG}/f_auto,q_auto,c_limit,w_${width}/${id}`;
+  /^(https?:|\/)/i.test(id) ? id : `${IMG}/f_auto,q_auto,c_limit,w_${width}/${id}`;
 
 export const cloudVideoThumb = (id, width = 900) =>
   `${VID}/so_1,c_limit,w_${width},f_jpg,q_auto/${id}.jpg`;
