@@ -61,6 +61,34 @@ const staticMeta = {
       "See how CyberX Soft applies strategy, technology, creative, data, cybersecurity, and delivery capabilities to practical client and platform needs.",
   },
 
+  "/gallery": {
+    title:
+      "Creative Gallery | Animation, Motion Graphics and Design | CyberX Soft",
+    description:
+      "Browse 2D animation, motion graphics, video, and poster design produced by the CyberX Soft creative team.",
+  },
+
+  "/gallery/brand-strategy": {
+    title:
+      "Brand Strategy and Growth Gallery | CyberX Soft",
+    description:
+      "Browse selected brand, campaign, and digital growth work produced by the CyberX Soft team.",
+  },
+
+  "/gallery/ai-software": {
+    title:
+      "AI and Software Gallery | CyberX Soft",
+    description:
+      "Browse selected software, platform, and AI-enabled solutions built by the CyberX Soft team.",
+  },
+
+  "/gallery/data-cybersecurity": {
+    title:
+      "Data and Cybersecurity Gallery | CyberX Soft",
+    description:
+      "Browse selected data, cybersecurity, and digital governance work from the CyberX Soft team.",
+  },
+
   "/insights": {
     title:
       "Insights on AI Software Cybersecurity and Digital Growth | CyberX Soft",
