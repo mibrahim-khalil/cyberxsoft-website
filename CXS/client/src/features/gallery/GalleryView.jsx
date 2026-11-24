@@ -12,6 +12,14 @@ import { getThumb } from "./galleryData";
 
 import "./gallery.css";
 
+/* Items marked `logo: true` show the whole logo on a light card instead of a cropped photo. */
+const logoImgStyle = {
+  objectFit: "contain",
+  padding: "16%",
+  boxSizing: "border-box",
+  background: "#f4f7fb",
+};
+
 export default function GalleryView({ gallery }) {
   const { items, categoryOrder = [], hero, intro, cta, serviceName, serviceSlug } = gallery;
 
@@ -114,7 +122,13 @@ export default function GalleryView({ gallery }) {
                       aria-label={`Open ${item.title}`}
                     >
                       {thumb ? (
-                        <img src={thumb} alt="" loading="lazy" decoding="async" />
+                        <img
+                          src={thumb}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          style={item.logo ? logoImgStyle : undefined}
+                        />
                       ) : (
                         <span className="gcard__fallback" aria-hidden="true" />
                       )}
