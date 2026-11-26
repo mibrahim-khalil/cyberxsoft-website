@@ -18,7 +18,6 @@ const legal = (legalSlug) => ({
     return { Component: () => <LegalPage legalSlug={legalSlug} /> };
   },
 });
-
 const router = createBrowserRouter([
   {
     path: "/",
