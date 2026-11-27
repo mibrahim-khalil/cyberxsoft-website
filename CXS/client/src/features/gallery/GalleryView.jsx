@@ -1,38 +1,62 @@
 import { useEffect, useMemo, useState } from "react";
 import { Play } from "lucide-react";
 
+
 import PageHero from "../../components/PageHero";
 import CTASection from "../../components/CTASection";
 import SectionHead from "../../ui/SectionHead";
 import { serviceMedia } from "../../config/media";
 import { Block } from "../services/ServiceBlocks";
+import { publishedCaseStudies } from "../case-studies/workData";
+
 
 import GalleryLightbox from "./GalleryLightbox";
 import { getThumb } from "./galleryData";
 
+
 import "./gallery.css";
 import "./galleryEven.css";
+import "./galleryLogo.css";
 
-/* Items marked `logo: true` show the whole logo on a light card instead of a cropped photo. */
-const logoImgStyle = {
-  objectFit: "contain",
-  padding: "14%",
-  boxSizing: "border-box",
-  background: "#f4f7fb",
-};
+
+/* The CXS logo is used whenever a project has no logo file of its own. */
+const CXS_LOGO = "/logos/company-logo.png";
+
+
+/* caseStudy id -> logo path, read straight from workData.js */
+const logoByCaseStudy = Object.fromEntries(
+  publishedCaseStudies.map((study) => [study.id, study.logo]),
+);
+
+
+/* Logo cards take the logo of their case study, so it is only defined in workData.js. */
+function withClientLogo(item) {
+  if (!item.logo) return item;
+  const own = item.caseStudy ? logoByCaseStudy[item.caseStudy] : null;
+  return own ? { ...item, image: own } : item;
+}
+
 
 export default function GalleryView({ gallery }) {
-  const { items, categoryOrder = [], hero, intro, cta, serviceName, serviceSlug } = gallery;
+  const { items: rawItems, categoryOrder = [], hero, intro, cta, serviceName, serviceSlug } = gallery;
+
+
+  const items = useMemo(() => rawItems.map(withClientLogo), [rawItems]);
+
 
   const servicePath = `/services/${serviceSlug}`;
   const heroMedia = serviceMedia[serviceSlug];
 
+
   const [category, setCategory] = useState("All");
   const [openId, setOpenId] = useState(null);
+  const [failedIds, setFailedIds] = useState(() => new Set());
+
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
+
 
   const categories = useMemo(() => {
     const present = [...new Set(items.map((item) => item.category))];
@@ -43,15 +67,28 @@ export default function GalleryView({ gallery }) {
     ];
   }, [items, categoryOrder]);
 
+
   const filtered = useMemo(
     () => (category === "All" ? items : items.filter((item) => item.category === category)),
     [category, items],
   );
 
+
   const openIndex = openId ? filtered.findIndex((item) => item.id === openId) : -1;
+
 
   const countFor = (name) =>
     name === "All" ? items.length : items.filter((item) => item.category === name).length;
+
+
+  const markFailed = (id) =>
+    setFailedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
+
 
   return (
     <>
@@ -70,8 +107,10 @@ export default function GalleryView({ gallery }) {
         position={heroMedia.position}
       />
 
+
       <Block tone="dark" aurora id="gallery">
         <SectionHead label={intro.label} title={intro.title} description={intro.description} center />
+
 
         {items.length === 0 ? (
           <div
@@ -105,16 +144,23 @@ export default function GalleryView({ gallery }) {
               ))}
             </div>
 
+
             <p className="gallery__count" aria-live="polite">
               Showing {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
               {category !== "All" ? ` in ${category}` : ""}
             </p>
 
+
             <ul className="gallery__grid gallery__grid--even" key={category}>
               {filtered.map((item, i) => {
-                const thumb = getThumb(item, 900);
+                /* If a logo file is missing, swap to the CXS logo instead of a blank card. */
+                const thumb = item.logo && failedIds.has(item.id) ? CXS_LOGO : getThumb(item, 900);
                 return (
-                  <li key={item.id} className={`gcard gcard--${item.ratio || "wide"}`} style={{ "--i": i }}>
+                  <li
+                    key={item.id}
+                    className={`gcard gcard--${item.ratio || "wide"}${item.logo ? " gcard--logo" : ""}`}
+                    style={{ "--i": i }}
+                  >
                     <button
                       type="button"
                       className="gcard__btn"
@@ -128,18 +174,20 @@ export default function GalleryView({ gallery }) {
                           alt=""
                           loading="lazy"
                           decoding="async"
-                          style={item.logo ? logoImgStyle : undefined}
+                          onError={item.logo ? () => markFailed(item.id) : undefined}
                         />
                       ) : (
                         <span className="gcard__fallback" aria-hidden="true" />
                       )}
                       <span className="gcard__shade" aria-hidden="true" />
 
+
                       {item.type === "video" && (
                         <span className="gcard__play" aria-hidden="true">
                           <Play size={18} fill="currentColor" strokeWidth={0} />
                         </span>
                       )}
+
 
                       <span className="gcard__meta">
                         <span className="gcard__cat">{item.category}</span>
@@ -154,12 +202,14 @@ export default function GalleryView({ gallery }) {
         )}
       </Block>
 
+
       <CTASection
         title={cta.title}
         description={cta.description}
         buttonLabel={cta.buttonLabel}
         buttonPath={cta.buttonPath}
       />
+
 
       {openIndex >= 0 && (
         <GalleryLightbox
