@@ -1,0 +1,12 @@
+/* Work page: show the CXS logo in its real colours for projects without their own logo. */
+
+.work-card__logo-tile.work-card__logo-tile--cxs {
+  background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.9);
+  padding: 5px;
+  box-shadow: 0 12px 26px -16px rgba(0, 0, 0, 0.55);
+}
+
+.work-card__logo-tile.work-card__logo-tile--cxs img {
+  filter: none;
+}
