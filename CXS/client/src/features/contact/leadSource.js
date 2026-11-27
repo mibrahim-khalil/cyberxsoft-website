@@ -1,5 +1,6 @@
 import { services } from "../services/servicesData";
 import { publishedCaseStudies } from "../case-studies/workData";
+import { articleBySlug } from "../insights/articlesData";
 
 const PAGE_KEY = "cxs:last-page";
 const LEAD_KEY = "cxs:lead";
@@ -18,6 +19,16 @@ const studyService = {
   "ayur-essencia": "ai-software-digital-solutions",
   "mediabuzz-global": "brand-strategy-digital-growth",
   "belgium-elite-pigeon-auctions": "ai-software-digital-solutions",
+};
+
+/* Which service each insight category points to */
+const categoryService = {
+  "AI & Automation": "ai-software-digital-solutions",
+  "Software & Platforms": "ai-software-digital-solutions",
+  "Cybersecurity & Governance": "data-cybersecurity-digital-governance",
+  "Data & Business Intelligence": "data-cybersecurity-digital-governance",
+  "Brand Growth & Creative": "brand-strategy-digital-growth",
+  "Delivery & Talent": TALENT_SLUG,
 };
 
 /* Gallery pages and the service each one belongs to */
@@ -76,6 +87,14 @@ function pageInfo(path) {
     if (serviceBySlug[slug]) {
       return { label: `${serviceLabel(slug)} page`, serviceSlug: slug };
     }
+  }
+
+  if (path.startsWith("/insights/")) {
+    const article = articleBySlug[path.split("/").pop()];
+    return {
+      label: "Insights article",
+      serviceSlug: article ? categoryService[article.category] || "" : "",
+    };
   }
 
   if (galleryToService[path]) {
