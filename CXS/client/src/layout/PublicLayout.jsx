@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { motion } from "motion/react";
 
@@ -8,9 +8,18 @@ import SiteMeta from "../components/SiteMeta";
 
 import CustomCursor from "../ui/CustomCursor";
 import SmoothScroll, { ScrollProgress } from "../ui/SmoothScroll";
+import { rememberPage, trackContactClicks } from "../features/contact/leadSource";
 
 function PublicLayout() {
   const { pathname } = useLocation();
+
+  // Remember the last page visited, so the contact form knows where the visitor came from
+  useEffect(() => {
+    rememberPage(pathname);
+  }, [pathname]);
+
+  // Watch every link to /contact on the site and note which card or section it sits in
+  useEffect(() => trackContactClicks(), []);
 
   return (
     <>
