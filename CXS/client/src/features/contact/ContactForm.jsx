@@ -1,23 +1,26 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, CheckCircle2, Send } from "lucide-react";
+import { Check, CheckCircle2, MapPin, Send } from "lucide-react";
 
 import Button from "../../ui/Button";
 import { EASE } from "../../ui/motion";
 import { services } from "../services/servicesData";
+import { detectSource } from "./leadSource";
 
-const initial = {
+import "./contactSource.css";
+
+const makeInitial = (service = "") => ({
   fullName: "",
   workEmail: "",
   company: "",
   phone: "",
-  service: "",
+  service,
   message: "",
   preferredContactMethod: "",
   privacyConsent: false,
   website: "", // spam trap: real visitors never see or fill this
-};
+});
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -69,7 +72,11 @@ function Field({ id, label, required, error, hint, children }) {
 }
 
 export default function ContactForm() {
-  const [values, setValues] = useState(initial);
+  const [params] = useSearchParams();
+  // Worked out once, when the form first appears
+  const [source] = useState(() => detectSource(params.get("service")));
+
+  const [values, setValues] = useState(() => makeInitial(source.serviceSlug));
   const [touched, setTouched] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | success
   const [serverError, setServerError] = useState("");
@@ -136,7 +143,7 @@ export default function ContactForm() {
       }
 
       setStatus("success");
-      setValues(initial);
+      setValues(makeInitial(source.serviceSlug));
       setTouched({});
     } catch (error) {
       // fetch() rejects with a TypeError when the server cannot be reached.
@@ -217,6 +224,16 @@ export default function ContactForm() {
               <Field id="phone" label="Phone or WhatsApp" error={show("phone")}>
                 <input type="tel" placeholder="+92 300 0000000" autoComplete="tel" maxLength={50} {...bind("phone")} />
               </Field>
+            </div>
+
+            <div className="contact-source">
+              <span className="contact-source__icon" aria-hidden="true">
+                <MapPin size={16} />
+              </span>
+              <div>
+                <small>Where you came from.</small>
+                <strong>{source.label}</strong>
+              </div>
             </div>
 
             <fieldset className="choice">
