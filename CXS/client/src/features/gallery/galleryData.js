@@ -6,7 +6,7 @@
  * Copy any item below and edit it. Fields:
  *   id          unique, lowercase, no spaces
  *   title       shown on the card and in the viewer
- *   category    "2D Animation" | "Motion Graphics" | "Video" | "Posters & Design"
+ *   category    "2D Animation" | "3D Animation" | "Motion Graphics" | "Video" | "Posters & Design"
  *               (a new category name automatically gets its own filter button)
  *   type        "video" or "image"
  *   ratio       "wide" | "portrait" | "square"   (card shape, optional)
@@ -27,25 +27,32 @@
  * Always set it back to false before committing.
  */
 
+
 const SHOW_DRAFTS = false;
+
 
 const CLOUD_NAME = "uao8z2fi";
 const IMG = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
 const VID = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload`;
 
+
 /* ---------- Media helpers ---------- */
+
 
 /* Full URLs and site paths (like /logos/x.png) are used as they are.
    Anything else is treated as a Cloudinary public ID. */
 export const cloudImage = (id, width = 900) =>
   /^(https?:|\/)/i.test(id) ? id : `${IMG}/f_auto,q_auto,c_limit,w_${width}/${id}`;
 
+
 export const cloudVideoThumb = (id, width = 900) =>
   `${VID}/so_1,c_limit,w_${width},f_jpg,q_auto/${id}.jpg`;
+
 
 /* YouTube gives every video a free thumbnail.
    If a video has no HD one, change "maxresdefault" to "hqdefault". */
 export const youtubeThumb = (id) => `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+
 
 export function getThumb(item, width = 900) {
   if (item.thumb) return cloudImage(item.thumb, width);
@@ -55,7 +62,9 @@ export function getThumb(item, width = 900) {
   return null;
 }
 
+
 export const getFullImage = (item) => cloudImage(item.image, 1600);
+
 
 export function getVideoSrc(video) {
   if (!video) return "";
@@ -64,7 +73,9 @@ export function getVideoSrc(video) {
   return "";
 }
 
+
 /* ---------- Page content ---------- */
+
 
 export const galleryHero = {
   eyebrow: "Creative Gallery",
@@ -73,12 +84,14 @@ export const galleryHero = {
     "Browse a selection of 2D animation, motion graphics, video, and poster design produced by the CyberX Soft creative team.",
 };
 
+
 export const galleryIntro = {
   label: "Creative gallery",
   title: "Selected *animation, motion* and design work",
   description:
     "Filter by category and open any piece to watch it or view it full size. Where a piece belongs to a published project, the viewer links to its case study.",
 };
+
 
 export const galleryCta = {
   title: "Want creative work like *this* for your brand?",
@@ -88,8 +101,10 @@ export const galleryCta = {
   buttonPath: "/contact",
 };
 
+
 /* Sample videos (open-source animated shorts) are used only as placeholders. */
 const SAMPLE = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample";
+
 
 const allItems = [
   /* ---------- 2D Animation ---------- */
@@ -126,6 +141,38 @@ const allItems = [
     image: "brand-hero",
   },
 
+
+  /* ---------- 3D Animation ---------- */
+  /* TODO: replace the titles and descriptions below with the real ones. */
+  {
+    id: "learning-camp-video-1",
+    title: "Taleem Learning Camps · Video 1",
+    category: "3D Animation",
+    type: "video",
+    ratio: "portrait",
+    description: "Video produced by the CyberX Soft creative team.",
+    video: { source: "cloudinary", id: "work-video-1" },
+  },
+  {
+    id: "learning-camp-video-2",
+    title: "Taleem Learning Camps · Video 2",
+    category: "3D Animation",
+    type: "video",
+    ratio: "portrait",
+    description: "Video produced by the CyberX Soft creative team.",
+    video: { source: "cloudinary", id: "work-video-2" },
+  },
+  {
+    id: "learning-camp-video-3",
+    title: "Taleem Learning Camps · Video 3",
+    category: "3D Animation",
+    type: "video",
+    ratio: "portrait",
+    description: "Video produced by the CyberX Soft creative team.",
+    video: { source: "cloudinary", id: "work-video-3" },
+  },
+
+
   /* ---------- Motion Graphics ---------- */
   {
     id: "sample-explainer",
@@ -159,6 +206,7 @@ const allItems = [
     description: "Sample item. Replace with real social-media motion frames.",
     image: "data-crystal",
   },
+
 
   /* ---------- Posters & Design ---------- */
   {
@@ -194,6 +242,7 @@ const allItems = [
     image: "software-section",
   },
 
+
   /* ---------- Video ---------- */
   {
     id: "sample-product-video",
@@ -219,13 +268,23 @@ const allItems = [
   },
 ];
 
+
 /* Only published items reach the page. */
 export const galleryItems = allItems.filter((item) => SHOW_DRAFTS || !item.draft);
 
+
 /* ---------- Categories (built automatically from the visible items) ---------- */
 
-const categoryOrder = ["2D Animation", "Motion Graphics", "Video", "Posters & Design"];
+
+const categoryOrder = [
+  "2D Animation",
+  "3D Animation",
+  "Motion Graphics",
+  "Video",
+  "Posters & Design",
+];
 const present = [...new Set(galleryItems.map((item) => item.category))];
+
 
 export const galleryCategories = [
   "All",
