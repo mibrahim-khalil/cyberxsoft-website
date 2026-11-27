@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 
+
 import SectionHead from "../../ui/SectionHead";
 import Button from "../../ui/Button";
 import { imageProps } from "../../ui/motion";
@@ -10,9 +11,19 @@ import { caseStudyMedia } from "../../config/media";
 import { publishedCaseStudies } from "../case-studies/workData";
 
 
+import "./homeLogo.css";
+
+
+
+/* Projects still using this placeholder show the CXS logo in its real colours. */
+const CXS_LOGO = "/logos/company-logo.png";
+
+
+
 function CaseStudyPanel({ project }) {
   // Cloudinary background (same method as the service cards)
   const media = caseStudyMedia[project.id];
+
 
 
   // Fallback: support whichever image property is defined in your workData
@@ -25,7 +36,14 @@ function CaseStudyPanel({ project }) {
     project.img;
 
 
+
   const features = project.shortFeatures || project.features || [];
+
+
+
+  // true when the project has no logo of its own (placeholder CXS logo)
+  const isCxsLogo = project.logo === CXS_LOGO;
+
 
 
   return (
@@ -60,14 +78,16 @@ function CaseStudyPanel({ project }) {
       )}
 
 
+
       {/* Ambient Dark Gradient Shade for text contrast */}
       <span className="pano__shade" aria-hidden="true" />
+
 
 
       {/* Top Header: Logo on the Left of the Big Outline Number */}
       <div className="pano__top-badge" aria-hidden="true">
         {project.logo && (
-          <div className="pano__brand-logo">
+          <div className={`pano__brand-logo${isCxsLogo ? " pano__brand-logo--cxs" : ""}`}>
             <img
               src={project.logo}
               alt={project.client || ""}
@@ -81,18 +101,19 @@ function CaseStudyPanel({ project }) {
       </div>
 
 
+
       {/* Glass Caption Card */}
       <div className="pano__caption glass">
-        <span className="pano__icon">
+        <span className={`pano__icon${isCxsLogo ? " pano__icon--cxs" : ""}`}>
           {project.logo ? (
             <img
               src={project.logo}
               alt={project.client}
               style={{
-                maxWidth: "28px",
-                maxHeight: "28px",
+                maxWidth: isCxsLogo ? "36px" : "28px",
+                maxHeight: isCxsLogo ? "36px" : "28px",
                 objectFit: "contain",
-                filter: "brightness(0) invert(1)",
+                filter: isCxsLogo ? "none" : "brightness(0) invert(1)",
               }}
               onError={(e) => {
                 e.currentTarget.style.display = "none";
@@ -104,6 +125,7 @@ function CaseStudyPanel({ project }) {
             </span>
           )}
         </span>
+
 
 
         <span
@@ -119,8 +141,10 @@ function CaseStudyPanel({ project }) {
         </span>
 
 
+
         <h3>{project.title}</h3>
         <p>{project.shortDescription}</p>
+
 
 
         <ul>
@@ -133,6 +157,7 @@ function CaseStudyPanel({ project }) {
         </ul>
 
 
+
         <span className="pano__go">
           Explore case study <ArrowUpRight size={16} aria-hidden="true" />
         </span>
@@ -142,11 +167,13 @@ function CaseStudyPanel({ project }) {
 }
 
 
+
 export default function EvidenceSection() {
   const trackRef = useRef(null);
   const [current, setCurrent] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
+
 
 
   const updateScrollState = () => {
@@ -158,12 +185,14 @@ export default function EvidenceSection() {
     setCanScrollRight(scrollLeft < maxScroll - 20);
 
 
+
     const childWidth = el.firstElementChild
       ? el.firstElementChild.clientWidth + 24
       : 1;
     const index = Math.round(scrollLeft / childWidth);
     setCurrent(Math.min(publishedCaseStudies.length - 1, Math.max(0, index)));
   };
+
 
 
   useEffect(() => {
@@ -179,6 +208,7 @@ export default function EvidenceSection() {
   }, []);
 
 
+
   const scrollByAmount = (direction) => {
     const el = trackRef.current;
     if (!el) return;
@@ -187,6 +217,7 @@ export default function EvidenceSection() {
       : 500;
     el.scrollBy({ left: direction * amount, behavior: "smooth" });
   };
+
 
 
   return (
@@ -199,6 +230,7 @@ export default function EvidenceSection() {
       <div className="aurora" aria-hidden="true" />
 
 
+
       <div className="pano__content">
         <div className="container pano__head">
           <SectionHead
@@ -206,6 +238,7 @@ export default function EvidenceSection() {
             title="Project stories built around *verified evidence*"
             description="Published work should make the client context, CyberX Soft responsibilities, delivered solution, and approved outcome clear without overstating the engagement."
           />
+
 
 
           <div className="pano__meta">
@@ -236,6 +269,7 @@ export default function EvidenceSection() {
             </div>
 
 
+
             <div className="pano__progress" aria-hidden="true">
               <span className="pano__count">
                 {String(current + 1).padStart(2, "0")}{" "}
@@ -254,6 +288,7 @@ export default function EvidenceSection() {
             </div>
           </div>
         </div>
+
 
 
         <div ref={trackRef} className="pano__track">
