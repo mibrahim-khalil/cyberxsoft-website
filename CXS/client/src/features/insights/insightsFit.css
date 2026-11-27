@@ -1,0 +1,25 @@
+/* Insights filter row: keep all seven pills on one row */
+
+.insights-tabs {
+  flex-wrap: nowrap;
+  gap: 4px;
+}
+
+.insights-tabs__btn {
+  flex: none;
+  white-space: nowrap;
+  padding: 11px clamp(10px, 1.05vw, 16px);
+  font-size: clamp(0.78rem, 0.95vw, 0.88rem);
+}
+
+/* If the screen is too narrow for one row, scroll sideways instead of wrapping */
+@media (max-width: 1180px) {
+  .insights-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .insights-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
