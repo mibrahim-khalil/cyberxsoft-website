@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import { services } from "../features/services/servicesData";
 import { getLegalPage } from "../features/legal/legalData";
+import { articleBySlug, isPublished } from "../features/insights/articlesData";
 
 const staticMeta = {
   "/": {
@@ -136,6 +137,19 @@ function getPageMeta(pathname) {
         description:
           service.detail?.heroDescription ||
           service.homeDescription,
+      };
+    }
+  }
+
+  if (pathname.startsWith("/insights/")) {
+    const slug = pathname.replace("/insights/", "");
+
+    if (isPublished(slug)) {
+      const article = articleBySlug[slug];
+
+      return {
+        title: `${article.title} | CyberX Soft`,
+        description: article.excerpt,
       };
     }
   }
