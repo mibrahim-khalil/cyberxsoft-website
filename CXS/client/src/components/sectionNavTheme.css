@@ -1,0 +1,40 @@
+/* Section nav bar: solid dark bar, grey labels, green pill for the current section. */
+
+
+.section-nav .section-nav__list {
+  background: #071126;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 34px -18px rgba(4, 13, 32, 0.7);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+
+/* Inactive labels: grey */
+.section-nav .section-nav__btn {
+  color: #9ba5b6;
+  font-weight: 600;
+  background: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.section-nav .section-nav__btn:hover {
+  color: #c3cad6;
+  background: rgba(155, 165, 182, 0.14);
+}
+
+
+/* Current section: green pill, dark text */
+.section-nav .section-nav__btn.is-active,
+.section-nav .section-nav__btn.is-active:hover {
+  color: #04122b;
+  background: #55e091;
+  box-shadow: 0 8px 20px -10px rgba(85, 224, 145, 0.9);
+}
+
+
+.section-nav .section-nav__btn:focus-visible {
+  outline: 2px solid #55e091;
+  outline-offset: 2px;
+}
