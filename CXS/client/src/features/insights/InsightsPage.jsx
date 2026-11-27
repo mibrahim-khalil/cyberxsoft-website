@@ -12,6 +12,7 @@ import { Block } from "../services/ServiceBlocks";
 import { insightCategories, insights } from "./insightsData";
 
 import "./insights.css";
+import "./insightsFit.css";
 
 const ALL = "All Insights";
 
