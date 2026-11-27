@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
@@ -10,9 +11,11 @@ import { insightMedia, pageMedia } from "../../config/media";
 
 import { Block } from "../services/ServiceBlocks";
 import { insightCategories, insights } from "./insightsData";
+import { articleById, isPublished } from "./articlesData";
 
 import "./insights.css";
 import "./insightsFit.css";
+import "./articles.css";
 
 const ALL = "All Insights";
 
@@ -29,7 +32,39 @@ const descriptions = {
 
 function Card({ insight }) {
   const media = insightMedia[insight.type] || "software-section";
-  const soon = insight.date === "Coming soon";
+  const article = articleById[insight.id];
+  const live = Boolean(article) && isPublished(article.slug);
+  const soon = !live && insight.date === "Coming soon";
+
+  const content = (
+    <>
+      <div className="insight__media">
+        <img {...imageProps(media, { sizes: "(max-width: 900px) 100vw, 400px" })} alt="" />
+        <span className="insight__tag">{insight.category}</span>
+      </div>
+
+      <div className="insight__body">
+        <h3>{insight.title}</h3>
+        <p>{insight.excerpt}</p>
+        <div className="insight__meta">
+          {live ? (
+            <>
+              <span className="insight__soon">Read article</span>
+              <span aria-hidden="true">·</span>
+              <span>{article.readTime}</span>
+            </>
+          ) : (
+            <>
+              <span className={soon ? "insight__soon" : ""}>{soon ? "Coming soon" : insight.date}</span>
+              <span aria-hidden="true">·</span>
+              <span>{insight.readTime}</span>
+            </>
+          )}
+          <ArrowUpRight size={18} aria-hidden="true" />
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <motion.article
@@ -40,21 +75,13 @@ function Card({ insight }) {
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.7, ease: EASE }}
     >
-      <div className="insight__media">
-        <img {...imageProps(media, { sizes: "(max-width: 900px) 100vw, 400px" })} alt="" />
-        <span className="insight__tag">{insight.category}</span>
-      </div>
-
-      <div className="insight__body">
-        <h3>{insight.title}</h3>
-        <p>{insight.excerpt}</p>
-        <div className="insight__meta">
-          <span className={soon ? "insight__soon" : ""}>{soon ? "Coming soon" : insight.date}</span>
-          <span aria-hidden="true">·</span>
-          <span>{insight.readTime}</span>
-          <ArrowUpRight size={18} aria-hidden="true" />
-        </div>
-      </div>
+      {live ? (
+        <Link to={`/insights/${article.slug}`} className="insight__link" data-cursor="Read">
+          {content}
+        </Link>
+      ) : (
+        content
+      )}
     </motion.article>
   );
 }
