@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
+
 import { scrollToTarget } from "../ui/SmoothScroll";
+
+
+import "./sectionNavTheme.css";
+
 
 /*
  * Sticky in-page navigation for long pages. Builds itself from every
@@ -10,11 +15,13 @@ export default function SectionNav() {
   const [items, setItems] = useState([]);
   const [active, setActive] = useState("");
 
+
   useEffect(() => {
     const nodes = [...document.querySelectorAll("[data-nav-label][id]")];
     const frame = requestAnimationFrame(() =>
       setItems(nodes.map((node) => ({ id: node.id, label: node.dataset.navLabel }))),
     );
+
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -26,13 +33,16 @@ export default function SectionNav() {
     );
     nodes.forEach((node) => observer.observe(node));
 
+
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
     };
   }, []);
 
+
   if (items.length === 0) return <div className="section-nav-spacer" />;
+
 
   return (
     <nav className="section-nav" aria-label="On this page">
