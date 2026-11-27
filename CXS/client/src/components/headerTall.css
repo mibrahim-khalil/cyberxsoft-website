@@ -1,0 +1,15 @@
+/* Taller header so the logo fits comfortably inside the bar */
+
+@media (min-width: 561px) {
+  html:root {
+    --header-h: 96px;
+  }
+
+  .site-header .site-header__bar {
+    height: 96px;
+  }
+
+  .site-header .site-header__logo {
+    top: 0;
+  }
+}
