@@ -11,11 +11,12 @@ import GalleryLightbox from "./GalleryLightbox";
 import { getThumb } from "./galleryData";
 
 import "./gallery.css";
+import "./galleryEven.css";
 
 /* Items marked `logo: true` show the whole logo on a light card instead of a cropped photo. */
 const logoImgStyle = {
   objectFit: "contain",
-  padding: "16%",
+  padding: "14%",
   boxSizing: "border-box",
   background: "#f4f7fb",
 };
@@ -109,7 +110,7 @@ export default function GalleryView({ gallery }) {
               {category !== "All" ? ` in ${category}` : ""}
             </p>
 
-            <ul className="gallery__grid" key={category}>
+            <ul className="gallery__grid gallery__grid--even" key={category}>
               {filtered.map((item, i) => {
                 const thumb = getThumb(item, 900);
                 return (
