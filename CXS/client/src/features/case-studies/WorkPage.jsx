@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
 
+
 import PageHero from "../../components/PageHero";
 import CTASection from "../../components/CTASection";
 import SectionHead from "../../ui/SectionHead";
 import { Item, Stagger } from "../../ui/motion";
 import { pageMedia } from "../../config/media";
+
 
 import { Block, Rows, SplitLayout } from "../services/ServiceBlocks";
 import {
@@ -18,7 +20,14 @@ import {
   workPublishingPrinciples,
 } from "./workData";
 
+
 import "./work.css";
+import "./workLogo.css";
+
+
+/* Projects still using this placeholder show the CXS logo in its real colours. */
+const CXS_LOGO = "/logos/company-logo.png";
+
 
 function Principles() {
   return (
@@ -33,8 +42,10 @@ function Principles() {
   );
 }
 
+
 export default function WorkPage() {
   const location = useLocation();
+
 
   // Automatically scroll to the exact case study when clicked from home page
   useEffect(() => {
@@ -54,6 +65,7 @@ export default function WorkPage() {
     }
   }, [location.hash]);
 
+
   return (
     <>
       <PageHero
@@ -65,6 +77,7 @@ export default function WorkPage() {
         image={pageMedia.work}
         position="72% 50%"
       />
+
 
       <Block tone="light" lift>
         <SplitLayout
@@ -80,6 +93,7 @@ export default function WorkPage() {
         </SplitLayout>
       </Block>
 
+
       <Block tone="dark" aurora id="case-studies">
         <SectionHead
           label="Case Studies"
@@ -87,6 +101,7 @@ export default function WorkPage() {
           description="Detailed overview of our engagements, discovery workflows, architectures, and approved deliverables."
           center
         />
+
 
         {/* 9 Complete Case Studies */}
         <div className="work-full-list">
@@ -99,7 +114,11 @@ export default function WorkPage() {
               <div className="work-card__header">
                 <div className="work-card__brand">
                   {project.logo && (
-                    <div className="work-card__logo-tile">
+                    <div
+                      className={`work-card__logo-tile${
+                        project.logo === CXS_LOGO ? " work-card__logo-tile--cxs" : ""
+                      }`}
+                    >
                       <img
                         src={project.logo}
                         alt={project.client}
@@ -115,8 +134,10 @@ export default function WorkPage() {
                   </div>
                 </div>
 
+
                 <span className="work-card__no">{project.number}</span>
               </div>
+
 
               <div className="work-card__body">
                 {project.fullParagraphs.map((para, i) => (
@@ -125,6 +146,7 @@ export default function WorkPage() {
                   </p>
                 ))}
               </div>
+
 
               <div className="work-card__footer">
                 <ul className="work-card__deliverables">
@@ -135,6 +157,7 @@ export default function WorkPage() {
                   ))}
                 </ul>
 
+
                 <Link to="/contact" className="work-card__link">
                   Discuss similar project <ArrowUpRight size={15} />
                 </Link>
@@ -143,6 +166,7 @@ export default function WorkPage() {
           ))}
         </div>
       </Block>
+
 
       <Block tone="light">
         <SplitLayout
@@ -157,6 +181,7 @@ export default function WorkPage() {
           <Rows items={caseStudyStructure} />
         </SplitLayout>
       </Block>
+
 
       <CTASection
         title="Discuss a *similar requirement*"
