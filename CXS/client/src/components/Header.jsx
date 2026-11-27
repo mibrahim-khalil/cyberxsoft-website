@@ -10,6 +10,8 @@ import { imageProps } from "../ui/motion";
 import { lockScroll } from "../ui/SmoothScroll";
 import Button from "../ui/Button";
 
+import "./headerTall.css";
+
 const serviceBySlug = Object.fromEntries(services.map((s) => [s.slug, s]));
 
 function slugFromPath(path) {
