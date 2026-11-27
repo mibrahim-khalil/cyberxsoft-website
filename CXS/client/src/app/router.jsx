@@ -35,6 +35,7 @@ const router = createBrowserRouter([
       { path: "gallery/ai-software", ...page(() => import("../features/gallery/ai/AiGalleryPage")) },
       { path: "gallery/data-cybersecurity", ...page(() => import("../features/gallery/data/DataGalleryPage")) },
       { path: "insights", ...page(() => import("../features/insights/InsightsPage")) },
+      { path: "insights/:slug", ...page(() => import("../features/insights/ArticlePage")) },
       { path: "about", ...page(() => import("../features/about/AboutPage")) },
       { path: "contact", ...page(() => import("../features/contact/ContactPage")) },
       legal("privacy-policy"),
