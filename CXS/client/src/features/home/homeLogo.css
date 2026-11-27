@@ -1,0 +1,21 @@
+/* Selected Work: show the CXS logo in its real colours for projects without their own logo. */
+
+/* Big logo next to the outline number: white plate, no white-silhouette filter */
+.pano__panel .pano__brand-logo.pano__brand-logo--cxs {
+  padding: 8px 14px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 14px 30px -16px rgba(0, 0, 0, 0.55);
+}
+
+.pano__panel .pano__brand-logo.pano__brand-logo--cxs img {
+  filter: none;
+  opacity: 1;
+}
+
+/* Small icon in the glass caption card: white plate, real colours */
+.pano__caption .pano__icon.pano__icon--cxs {
+  background: #ffffff;
+  padding: 4px;
+  box-sizing: border-box;
+}
